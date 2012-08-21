@@ -1,0 +1,24 @@
+
+NOTES ON THE URL FIELD.
+
+1) Using the default buffer limit of 125 bytes for TCP TX, the URL sent to the HTTP server should 
+not be longer than 107 characters, due to the space reserved for method and protocol version on HTTP
+while sending the request line to the server.
+
+2) Using an URL longer that the space available on the TCP buffer will cause a client error and will
+abort the HTTP request. The socket will be closed and no further headers or data will be exchanged.
+
+3) The recommended length for the hostname string is 70 characters, this usually is enough for most
+domain names.
+
+3) Additional entity and other non standard headers can be sent by providing a pointer to a buffer
+containing the null terminated string to be sent. All aditional headers should be terminated using 
+\n\r characters. No specific limit exist for additional header data, even if you set this pointer
+to point to an array larger than the available TCP buffer, the state machine will continue data
+transfer as long as the connection is stablished and untill it finds the null terminator on the
+provided buffer.
+
+5) The maximum request entity body size is dictated by the size of the WORD type, this kind of
+variable is 16 bit long, so a maximum size of 65535 bytes is allowed.
+
+
